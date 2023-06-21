@@ -15,6 +15,7 @@ const useDistances = () => {
     if (loading) {
       return;
     }
+    setError(null);
     setLoading(true);
     fetchDistances(cities).then((response) => {
       setData(response);

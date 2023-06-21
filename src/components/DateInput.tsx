@@ -1,6 +1,7 @@
 import React from 'react';
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from 'dayjs';
+import { styled } from '@mui/material';
 
 type NumericProps = {
   label: string;
@@ -12,9 +13,35 @@ type NumericProps = {
   invalid?: boolean;
 }
 
+const StyledDatePicker = styled(MobileDatePicker<Dayjs>)(({ error }: {error?: boolean}) => ({
+  marginLeft: "0px !important",
+  margin: '10px 0',
+  "& .MuiInputBase-root": {
+    borderRadius: '8px',
+    marginLeft: 0,
+    border: `1px solid ${error ? 'red' : '#ccc'}`,
+  },
+  "& .MuiInputBase-root:before": {
+    display: 'none'
+  },
+  "& .MuiInputBase-input": {
+    padding: "12px",
+    width: "120px",
+  },
+  "& .MuiFormLabel-root": {
+    top: "-8px",
+    left: "5px",
+    fontSize: 16,
+    transform: 'unset',
+  },
+  "& .MuiFormHelperText-root": {
+    fontSize: 14,
+  }
+}));
+
 const DateInput = ({ label, value, onChange, minValue = dayjs(), maxValue, errorText, invalid }: NumericProps) => {
   return (
-    <MobileDatePicker
+    <StyledDatePicker
       maxDate={maxValue}
       minDate={minValue}
       format="MM/DD/YYYY"
@@ -22,6 +49,7 @@ const DateInput = ({ label, value, onChange, minValue = dayjs(), maxValue, error
       value={value}
       onChange={onChange}
       label={label}
+      error={invalid}
       slotProps={{
         textField: {
           variant: "standard",

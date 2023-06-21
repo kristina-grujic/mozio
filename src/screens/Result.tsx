@@ -1,10 +1,47 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';
-import { Box } from '@mui/system';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import useDistances from '../hooks/useDistances';
-import { CircularProgress, Typography } from '@mui/material';
-import { Button } from '@mui/base';
+import { CircularProgress, Typography, styled, Box } from '@mui/material';
+import { StyledButton, Container, BoldText } from '../components/common';
+import { LocationOnOutlined, PanoramaFishEyeOutlined } from '@mui/icons-material';
+
+const COMMON_SX = Object.freeze({
+  m: 0.5
+});
+
+
+const StyledCity = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin: 10px;
+  margin-right: 50px;
+`;
+
+const StyledIcon = styled(Box)(() => ({
+  position: 'relative',
+  '&:before': {
+    content: '"• • •"',
+    position: 'absolute',
+    top: '40px',
+    left: '-3px',
+    transform: 'rotate(90deg)',
+    display: 'inline-block',
+    fontSize: 20,
+  }
+}))
+
+const Distance = styled(Box)`
+  color: #7786d2;
+  border: 1px solid #7786d2;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 20px;
+  transform: translateX(-100%);
+  width: fit-content;
+`;
 
 function Result() {
   const { getDistances, data, loading, error } = useDistances();
@@ -30,43 +67,57 @@ function Result() {
 
   if (loading) {
     return (
-      <Box>
+      <Container>
         <CircularProgress size={30}/>
-      </Box>
+      </Container>
     )
   }
 
   if (error) {
     return (
-      <Box>
+      <Container>
         <Typography>Oops! Something went wrong!</Typography>
-        <Button onClick={goBack}>Back</Button>
-      </Box>
+        <StyledButton onClick={goBack}>Back</StyledButton>
+      </Container>
     )
   }
 
   return (
-    <Box>
+    <Container>
+      <Box sx={{ml: 20}}>
       {
-        data.map((item, index) => (
-          <Box key={index}>
-            <Typography>{index === 0 && item.from}</Typography>
-            <Typography variant="body2">{item.distance} km</Typography>
-            <Typography>{item.to}</Typography>
+        data.map((item, index) => {
+          return (
+          <Box key={index} >
+            <StyledCity>
+              <StyledIcon><PanoramaFishEyeOutlined sx={{ mr: 5 }}/></StyledIcon>
+              <Typography>{item.from}</Typography>
+            </StyledCity>
+              <Distance>{item.distance} km</Distance>
+              {
+                index === data.length - 1 ? (
+                  <StyledCity>
+                    <LocationOnOutlined sx={{color: 'red', mr: 5, fontSize: 30}} />
+                    <Typography>{item.to}</Typography>
+                  </StyledCity>
+                ) : null
+              }
           </Box>
-        ))
+        )
+      })
       }
-      <Typography>
-        <strong>{totalDistance} km</strong> is total distance
+      </Box>
+      <Typography sx={COMMON_SX}>
+        <BoldText>{totalDistance} km</BoldText> is total distance
       </Typography>
-      <Typography>
-        <strong>{searchParams.get('passengers')}</strong> passengers
+      <Typography sx={COMMON_SX}>
+        <BoldText>{searchParams.get('passengers')}</BoldText> passengers
       </Typography>
-      <Typography>
-        <strong>{dayjs(searchParams.get('date')).format('MMM DD, YYYY')}</strong>
-      </Typography>
-      <Button onClick={goBack}>Back</Button>
-    </Box>
+      <BoldText sx={COMMON_SX}>
+        {dayjs(searchParams.get('date')).format('MMM DD, YYYY')}
+      </BoldText>
+      <StyledButton sx={{mt: 5}} onClick={goBack}>Back</StyledButton>
+    </Container>
   );
 }
 

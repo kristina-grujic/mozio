@@ -5,6 +5,8 @@ const useCities = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
   const [error, setError] = useState(null);
+
+  const clearError = useCallback(() => setError(null), [setError]);
   const getCities = useCallback((keyword: string) => {
     if (loading) {
       return;
@@ -13,6 +15,7 @@ const useCities = () => {
       setData([]);
       return;
     }
+    setError(null);
     setLoading(true);
     fetchCities(keyword).then((response) => {
       setData(response);
@@ -24,7 +27,7 @@ const useCities = () => {
   }, [loading, setLoading, setError]);
 
   return {
-    getCities, loading, data, error
+    getCities, loading, data, error, clearError
   }
 }
 

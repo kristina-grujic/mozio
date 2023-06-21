@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 import { Box } from '@mui/system';
 import { FieldArrayRenderProps } from 'react-final-form-arrays'
 import Autocomplete from './Autocomplete';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, styled } from '@mui/material';
 import { Field } from 'react-final-form';
+import { AddCircleOutline, HighlightOff, LocationOnOutlined, PanoramaFishEyeOutlined } from '@mui/icons-material';
 
 type CityInputProps = {
   index: number;
@@ -18,6 +19,29 @@ type CityInputProps = {
   invalid?: boolean;
   errorText?: string;
 }
+
+const StyledCityBox = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin: 10px;
+  margin-right: 50px;
+`
+
+const StyledIcon = styled(Box)(() => ({
+  position: 'relative',
+  '&:before': {
+    content: '"• • •"',
+    position: 'absolute',
+    top: '40px',
+    left: '-3px',
+    transform: 'rotate(90deg)',
+    display: 'inline-block',
+    fontSize: 20,
+  }
+}))
+
 
 const CityInput = ({
   index,
@@ -43,7 +67,12 @@ const CityInput = ({
     onDelete(index);
   }, [onChange, isDeletable]);
   return (
-    <Box>    
+    <StyledCityBox>
+      {
+        isFinal ?
+        <LocationOnOutlined sx={{color: 'red', mr: 4.5, mb: 2, fontSize: 30}} />
+        : <StyledIcon><PanoramaFishEyeOutlined sx={{ mr: 5, mb: 2 }}/></StyledIcon>
+      }
       <Autocomplete
         label={label}
         value={value}
@@ -54,19 +83,24 @@ const CityInput = ({
         onBlur={onBlur}
       />
       {
-        isDeletable && (
-          <IconButton onClick={handleDelete}>
-            x
+        isDeletable ? (
+          <IconButton onClick={handleDelete} sx={{mb: '5px', ml: 1}}>
+            <HighlightOff sx={{ color: '#7786d2'}} />
           </IconButton>
-        )
+        ) : <Box sx={{width: 50}} />
       }
-    </Box>
+    </StyledCityBox>
   )
 }
 
 type CityInputsProps = {
   cities: FieldArrayRenderProps<string, HTMLElement>['fields'];
 }
+
+const StyledButton = styled(Button)`
+  text-transform: none !important;
+  margin: 10px 5px;
+`
 
 const CityInputs = ({ cities }: CityInputsProps) => {
   const addCity = useCallback(() => {
@@ -99,7 +133,10 @@ const CityInputs = ({ cities }: CityInputsProps) => {
           />
         ))
       }
-      <Button onClick={addCity}>Add destination</Button>
+      <StyledButton onClick={addCity}>
+        <AddCircleOutline  sx={{ mr: 5 }} />
+        Add destination
+      </StyledButton>
     </Box>
   )
 }

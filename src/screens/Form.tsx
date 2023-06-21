@@ -8,9 +8,10 @@ import Numeric from '../components/Numeric';
 import DateInput from '../components/DateInput';
 import CityInputs from '../components/CityInputs';
 import { useValidationSchema } from '../hooks/useValidationSchema';
-import { Button } from '@mui/material';
+import { Stack } from '@mui/material';
 import FormRouteLinker from '../components/FormRouteLinker';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Container, StyledButton } from '../components/common';
 
 const validationSchema = yup.object({
 	cities: yup.array().of(
@@ -59,37 +60,41 @@ function Form() {
       }}
       initialValues={initialValues}
       render={({ values, handleSubmit, invalid }) => (
-        <>
-          <FieldArray name="cities">
-            {({ fields }) => (<CityInputs cities={fields} />)}
-          </FieldArray>
-          <FinalField
-            name="passengers"
-            render={({ input, meta }) => (
-              <Numeric
-                label={"Passengers"}
-                value={input.value}
-                onChange={input.onChange}
-                invalid={meta.invalid}
-                errorText="Select passengers"
+        <Container>
+          <Stack direction="row">
+            <FieldArray name="cities">
+              {({ fields }) => (<CityInputs cities={fields} />)}
+            </FieldArray>
+            <Stack direction="column">
+              <FinalField
+                name="passengers"
+                render={({ input, meta }) => (
+                  <Numeric
+                    label={"Passengers"}
+                    value={input.value}
+                    onChange={input.onChange}
+                    invalid={meta.invalid}
+                    errorText="Select passengers"
+                  />
+                )}
               />
-            )}
-          />
-          <FinalField
-            name="date"
-            render={({ input, meta }) => (
-              <DateInput
-                label={"Date"}
-                value={input.value}
-                onChange={input.onChange}
-                invalid={meta.invalid}
-                errorText="Date is required"
+              <FinalField
+                name="date"
+                render={({ input, meta }) => (
+                  <DateInput
+                    label={"Date"}
+                    value={input.value}
+                    onChange={input.onChange}
+                    invalid={meta.invalid}
+                    errorText="Date is required"
+                  />
+                )}
               />
-            )}
-          />
-          <Button onClick={handleSubmit} disabled={invalid}>Submit</Button>
+            </Stack>
+          </Stack>
+          <StyledButton onClick={handleSubmit} disabled={invalid}>Submit</StyledButton>
           <FormRouteLinker values={values} />
-        </>
+        </Container>
       )}
     />
   );
