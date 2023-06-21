@@ -48,7 +48,7 @@ export function fetchCities(keyword: string): Promise<string[]> {
       } catch (e) {
         reject(e);
       }
-    }, 150);
+    }, 250);
   });
 }
 
@@ -56,7 +56,7 @@ export function fetchDistances(cities: string[]): Promise<Distance[]> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       try {
-        if (cities.find((item) => item.toLowerCase().includes('Dijon'))) {
+        if (cities.find((item) => item.toLowerCase().includes('dijon'))) {
           throw new Error('Failed handling the request');
         }
         const distances = [];
@@ -72,6 +72,6 @@ export function fetchDistances(cities: string[]): Promise<Distance[]> {
       } catch (e) {
         reject(e);
       }
-    }, 150);
+    }, 500);
   });
 }

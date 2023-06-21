@@ -9,6 +9,10 @@ const useCities = () => {
     if (loading) {
       return;
     }
+    if (!keyword) {
+      setData([]);
+      return;
+    }
     setLoading(true);
     fetchCities(keyword).then((response) => {
       setData(response);

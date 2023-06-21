@@ -10,7 +10,7 @@ import CityInputs from '../components/CityInputs';
 import { useValidationSchema } from '../hooks/useValidationSchema';
 import { Button } from '@mui/material';
 import FormRouteLinker from '../components/FormRouteLinker';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
 	cities: yup.array().of(
@@ -28,11 +28,17 @@ export type FormValues = {
 
 function Form() {
   const validate = useValidationSchema(validationSchema);
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const onSubmit = useCallback((values: FormValues) => {
-    console.log(values);
-  }, []);
+    const formatted = {
+      cities: values.cities.join(','),
+      passengers: values.passengers.toLocaleString(),
+      date: values.date!.format('YYYY-MM-DD')
+    };
+    navigate(`/result?${(new URLSearchParams(formatted).toString())}`);
+  }, [navigate]);
 
   const initialValues = useMemo(() => {
     let cities = searchParams.get('cities');
