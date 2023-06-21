@@ -9,6 +9,8 @@ import DateInput from '../components/DateInput';
 import CityInputs from '../components/CityInputs';
 import { useValidationSchema } from '../hooks/useValidationSchema';
 import { Button } from '@mui/material';
+import FormRouteLinker from '../components/FormRouteLinker';
+import { useSearchParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
 	cities: yup.array().of(
@@ -18,7 +20,7 @@ const validationSchema = yup.object({
   date: yup.date().required().min(dayjs().startOf('day'))
 });
 
-type FormValues = {
+export type FormValues = {
   cities: string[];
   passengers: number;
   date: Dayjs | null;
@@ -26,17 +28,21 @@ type FormValues = {
 
 function Form() {
   const validate = useValidationSchema(validationSchema);
+  const [searchParams] = useSearchParams();
+
   const onSubmit = useCallback((values: FormValues) => {
     console.log(values);
   }, []);
 
-  console.log(dayjs().startOf('day'));
-
-  const initialValues = useMemo(() => ({
-    cities: ['', ''],
-    passengers: 0,
-    date: null
-  }), []);
+  const initialValues = useMemo(() => {
+    let cities = searchParams.get('cities');
+    let date = searchParams.get('date');
+    return {
+      cities: cities ? cities.split(',') : ['',''],
+      passengers: parseInt(searchParams.get('passengers') || '0'),
+      date: date ? dayjs(date) : null
+    }
+  }, []);
 
   return (
     <FinalForm
@@ -46,7 +52,7 @@ function Form() {
         ...arrayMutators
       }}
       initialValues={initialValues}
-      render={({ handleSubmit, invalid }) => (
+      render={({ values, handleSubmit, invalid }) => (
         <>
           <FieldArray name="cities">
             {({ fields }) => (<CityInputs cities={fields} />)}
@@ -76,6 +82,7 @@ function Form() {
             )}
           />
           <Button onClick={handleSubmit} disabled={invalid}>Submit</Button>
+          <FormRouteLinker values={values} />
         </>
       )}
     />
