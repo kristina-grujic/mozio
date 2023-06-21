@@ -11,11 +11,27 @@ type CityInputProps = {
   value: string | null;
   onDelete: (index: number) => void;
   onChange: (value: string ) => void;
+  onFocus: React.FocusEventHandler<HTMLElement>;
+  onBlur: React.FocusEventHandler<HTMLElement>;
   isDeletable?: boolean;
   isFinal?: boolean;
+  invalid?: boolean;
+  errorText?: string;
 }
 
-const CityInput = ({ index, label, value, onChange, onDelete, isDeletable, isFinal}: CityInputProps) => {
+const CityInput = ({
+  index,
+  label,
+  value,
+  onChange,
+  onDelete,
+  isDeletable,
+  isFinal,
+  invalid,
+  errorText,
+  onFocus,
+  onBlur
+}: CityInputProps) => {
   const handleChange = useCallback((newValue: string | null) => {
     onChange(newValue || '');
   }, [onChange]);
@@ -28,7 +44,15 @@ const CityInput = ({ index, label, value, onChange, onDelete, isDeletable, isFin
   }, [onChange, isDeletable]);
   return (
     <Box>    
-      <Autocomplete label={label} value={value} onChange={handleChange} />
+      <Autocomplete
+        label={label}
+        value={value}
+        onChange={handleChange}
+        errorText={errorText}
+        invalid={invalid}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
       {
         isDeletable && (
           <IconButton onClick={handleDelete}>
@@ -64,8 +88,12 @@ const CityInputs = ({ cities }: CityInputsProps) => {
               value={input.value}
               onChange={input.onChange}
               onDelete={removeCity}
+              onFocus={input.onFocus}
+              onBlur={input.onBlur}
               isFinal={index === cities.length! - 1}
               isDeletable={index !== 0 && cities.length !== 2}
+              errorText={`You must choose ${index === 0 ? 'the city of origin' : 'the destination'}`}
+              invalid={meta.touched && meta.invalid}
             />
           )}
           />

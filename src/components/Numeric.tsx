@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import {Box, IconButton, InputLabel, Typography} from '@mui/material';
+import {Box, FormControl, FormHelperText, IconButton, InputLabel, Typography} from '@mui/material';
 
 type NumericProps = {
   label: string;
@@ -7,9 +7,11 @@ type NumericProps = {
   minValue?: number;
   maxValue?: number;
   onChange: (value: number) => void;
+  errorText?: string;
+  invalid?: boolean;
 }
 
-const Numeric = ({ label, value, onChange, minValue = 0, maxValue }: NumericProps) => {
+const Numeric = ({ label, value, onChange, minValue = 0, maxValue, invalid, errorText }: NumericProps) => {
   const handleDecrease = useCallback(() => {
     let newValue = value - 1;
     if (newValue >= minValue) {
@@ -25,14 +27,21 @@ const Numeric = ({ label, value, onChange, minValue = 0, maxValue }: NumericProp
   }, [value, maxValue, onChange]);
 
   return (
-    <Box>
+    <>
       <InputLabel role="label">{label}</InputLabel>
       <Box>
         <IconButton onClick={handleDecrease} data-testid="decrease" disabled={value === minValue}>-</IconButton>
         {value}
         <IconButton onClick={handleIncrease} data-testid="increase" disabled={value === maxValue}>+</IconButton>
       </Box>
-    </Box>
+      <FormControl error={invalid}>
+        {
+          invalid ? (
+            <FormHelperText>{errorText}</FormHelperText>
+          ) : null
+        }
+      </FormControl>
+    </>
   );
 }
 
