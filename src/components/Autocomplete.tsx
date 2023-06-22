@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { styled, Autocomplete as MuiAutocomplete, TextField, Typography } from '@mui/material';
+import { styled, Autocomplete as MuiAutocomplete, TextField, Typography, Theme } from '@mui/material';
 import useCities from '../hooks/useCities';
 
-const StyledAutocomplete = styled(MuiAutocomplete<string | null>)(({ error }: {error?: boolean}) => ({
+const StyledAutocomplete = styled(MuiAutocomplete<string | null>)(({ theme, error }: {theme: Theme, error?: boolean}) => ({
   marginLeft: "0px !important",
   marginTop: 5,
   "& .MuiInputBase-root": {
@@ -18,6 +18,9 @@ const StyledAutocomplete = styled(MuiAutocomplete<string | null>)(({ error }: {e
     padding: "12px !important",
     width: "unset !important",
     minWidth: '25vw !important',
+    [theme.breakpoints.down('sm')]: {
+      width: '110px !important'
+    }
   },
   "& .MuiFormLabel-root": {
     top: "-8px",

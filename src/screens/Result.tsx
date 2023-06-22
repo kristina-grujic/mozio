@@ -47,6 +47,10 @@ function Result() {
   const { getDistances, data, loading, error } = useDistances();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const stringifiedParams = useMemo(() => searchParams.toString(), [searchParams]);
+
+  // needs to be called only on page load
   useEffect(() => {
     const cities = (searchParams.get('cities') || '').split(',').filter((item) => !!item);
     if (!cities.length) {
@@ -54,11 +58,11 @@ function Result() {
       return;
     }
     getDistances(cities);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goBack = useCallback(() => {
-    navigate(-1);
-  }, [])
+    navigate(`/?${stringifiedParams}`);
+  }, [navigate, stringifiedParams])
 
   const totalDistance = useMemo(() => {
     const total = data.reduce((previous, current) => (previous + current.distance), 0);
@@ -76,7 +80,7 @@ function Result() {
   if (error) {
     return (
       <Container>
-        <Typography>Oops! Something went wrong!</Typography>
+        <BoldText sx={{m: 10 }}>Oops! Something went wrong!</BoldText>
         <StyledButton onClick={goBack}>Back</StyledButton>
       </Container>
     )

@@ -15,7 +15,8 @@ type NumericProps = {
 
 const StyledDatePicker = styled(MobileDatePicker<Dayjs>)(({ error }: {error?: boolean}) => ({
   marginLeft: "0px !important",
-  margin: '10px 0',
+  margin: '20px 0',
+  marginRight: '20px',
   "& .MuiInputBase-root": {
     borderRadius: '8px',
     marginLeft: 0,

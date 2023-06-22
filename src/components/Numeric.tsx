@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import {Box, FormControl, FormHelperText, IconButton, InputLabel, styled, Typography} from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { boolean } from 'yup';
+
 type NumericProps = {
   label: string;
   value: number;
@@ -52,7 +52,7 @@ const Numeric = ({ label, value, onChange, minValue = 0, maxValue, invalid, erro
 
   return (
     <Box sx={{margin: '10px 0'}}>
-      <InputLabel role="label">{label}</InputLabel>
+      <InputLabel role="label" error={invalid}>{label}</InputLabel>
       <StyledBox error={invalid}>
         <StyledButton onClick={handleDecrease} data-testid="decrease" disabled={value === minValue}>
           <Remove fontSize='small' />

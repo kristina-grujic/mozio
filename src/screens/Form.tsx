@@ -8,7 +8,7 @@ import Numeric from '../components/Numeric';
 import DateInput from '../components/DateInput';
 import CityInputs from '../components/CityInputs';
 import { useValidationSchema } from '../hooks/useValidationSchema';
-import { Stack } from '@mui/material';
+import { Stack, styled } from '@mui/material';
 import FormRouteLinker from '../components/FormRouteLinker';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, StyledButton } from '../components/common';
@@ -26,6 +26,22 @@ export type FormValues = {
   passengers: number;
   date: Dayjs | null;
 }
+
+const StyledStack = styled(Stack)(({theme}) => ({
+  flexDirection: 'row',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column'
+  },
+}))
+
+const InputsContainer = styled(Stack)(({theme}) => ({
+  flexDirection: 'column',
+  alignContent: 'center',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'center',
+  },
+}))
 
 function Form() {
   const validate = useValidationSchema(validationSchema);
@@ -61,11 +77,11 @@ function Form() {
       initialValues={initialValues}
       render={({ values, handleSubmit, invalid }) => (
         <Container>
-          <Stack direction="row">
+          <StyledStack>
             <FieldArray name="cities">
               {({ fields }) => (<CityInputs cities={fields} />)}
             </FieldArray>
-            <Stack direction="column">
+            <InputsContainer>
               <FinalField
                 name="passengers"
                 render={({ input, meta }) => (
@@ -90,8 +106,8 @@ function Form() {
                   />
                 )}
               />
-            </Stack>
-          </Stack>
+            </InputsContainer>
+          </StyledStack>
           <StyledButton onClick={handleSubmit} disabled={invalid}>Submit</StyledButton>
           <FormRouteLinker values={values} />
         </Container>

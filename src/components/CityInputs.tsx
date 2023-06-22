@@ -20,14 +20,17 @@ type CityInputProps = {
   errorText?: string;
 }
 
-const StyledCityBox = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: flex-start;
-  margin: 10px;
-  margin-right: 50px;
-`
+const StyledCityBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-end',
+  justifyContent: 'flex-end',
+  margin: '10px',
+  marginRight: '50px',
+  [theme.breakpoints.down('md')]: {
+    marginRight: '10px'
+  }
+}));
 
 const StyledIcon = styled(Box)(() => ({
   position: 'relative',

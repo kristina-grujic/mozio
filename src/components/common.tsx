@@ -7,11 +7,14 @@ export const Container = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'white',
-  borderRadius: '10px',
-  margin: '20vh auto',
+  borderRadius: '20px',
+  padding: '40px 60px',
+  minWidth: '50vw',
+  minHeight: '400px',
+  width: 'fit-content'
 }));
 
-export const StyledButton = styled(Button)(() => ({
+export const StyledButton = styled(Button)(({ theme }) => ({
   background: '#374151',
   color: 'white',
   textTransform: 'none',
@@ -22,6 +25,9 @@ export const StyledButton = styled(Button)(() => ({
   '&.Mui-disabled': {
     background: '#e6e7eb',
     color: 'white',
+  },
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
   }
 }));
 
