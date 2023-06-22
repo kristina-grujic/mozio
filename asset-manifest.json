@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/mozio/static/css/main.e6c13ad2.css",
-    "main.js": "/mozio/static/js/main.d72b7550.js",
+    "main.js": "/mozio/static/js/main.b38be307.js",
     "static/js/787.4093cb39.chunk.js": "/mozio/static/js/787.4093cb39.chunk.js",
+    "static/media/background.png": "/mozio/static/media/background.5d34f91c0b471ad0c6b5.png",
     "index.html": "/mozio/index.html",
     "main.e6c13ad2.css.map": "/mozio/static/css/main.e6c13ad2.css.map",
-    "main.d72b7550.js.map": "/mozio/static/js/main.d72b7550.js.map",
+    "main.b38be307.js.map": "/mozio/static/js/main.b38be307.js.map",
     "787.4093cb39.chunk.js.map": "/mozio/static/js/787.4093cb39.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.d72b7550.js"
+    "static/js/main.b38be307.js"
   ]
 }
